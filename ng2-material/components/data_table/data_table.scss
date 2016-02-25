@@ -1,0 +1,171 @@
+@import "../../core/style/theme-functions";
+@import "../../core/style/variables";
+@import "../../core/style/shadows";
+@import "../../core/style/default-theme";
+
+// Don't expect to need these. Any headings/toolbars associated
+// with the table should be inside toolbar &/or wrapping card
+// and inherit styles that way.
+/* $data-table-h3-margin: 0 0 0px 0 !default;
+$data-table-h4-margin: 3px 0 1px 0 !default;
+$data-table-h4-font-weight: 400 !default;
+$data-table-header-line-height: 1.2em !default;
+$data-table-p-margin: 0 0 0 0 !default;
+$data-table-p-line-height: 1.6em !default; */
+
+//Heavy Influence From:
+//https://github.com/google/material-design-lite/blob/master/src/_variables.scss:
+$data-table-font-size: rem(1.3) !default;
+$data-table-header-font-size: rem(1.2) !default;
+$data-table-header-sort-icon-size: rem(1.6) !default;
+
+$data-table-header-color: rgba(#000, 0.54) !default;
+$data-table-header-sorted-color: rgba(#000, 0.87) !default;
+$data-table-header-sorted-icon-hover-color: rgba(#000, 0.26) !default;
+$data-table-divider-color: rgba(#000, 0.12) !default;
+
+$data-table-hover-color: #eeeeee !default;
+$data-table-selection-color: #e0e0e0 !default;
+
+$data-table-dividers: 1px solid $data-table-divider-color !default;
+
+$data-table-row-height: rem(4.800) !default;
+$data-table-last-row-height: rem(5.600) !default;
+$data-table-header-height: rem(5.600) !default;
+
+$data-table-column-spacing: rem(3.600) !default;
+$data-table-column-padding: $data-table-column-spacing / 2;
+
+$data-table-card-header-height: rem(6.400) !default;
+$data-table-card-title-top: rem(2.000) !default;
+$data-table-card-padding: rem(2.400) !default;
+$data-table-button-padding-right: rem(1.600) !default;
+$data-table-cell-top: $data-table-card-padding / 2;
+
+$data-table-select-width: rem(1.6) !default;
+
+//save some list reference grid measurements for now, in case.
+/* $list-item-primary-width: $baseline-grid * 7 !default;
+$list-item-primary-avatar-width: $baseline-grid * 5 !default;
+$list-item-primary-icon-width: $baseline-grid * 3 !default;
+$list-item-secondary-left-margin: $baseline-grid * 2 !default;
+$list-item-secondary-button-width: $baseline-grid * 6 !default;
+$list-item-inset-divider-offset: 12 * $baseline-grid !default;
+$list-item-height: 6 * $baseline-grid !default;
+$list-item-two-line-height: 9 * $baseline-grid !default;
+$list-item-three-line-height: 11 * $baseline-grid !default; */
+
+[md-data-table] {
+  position: relative;
+  // padding: $data-table-padding-top $data-table-padding-right $data-table-padding-bottom $data-table-padding-left;
+  border: $data-table-dividers;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: $data-table-font-size;
+  // background-color: unquote("rgb(#{$color-white})");
+
+  box-sizing: border-box;
+  width: 100%;
+
+  td, th {
+    padding: 0 $data-table-column-padding rem(1.2) $data-table-column-padding;
+    text-align: right;
+
+    &:first-of-type {
+      padding-left: 24px;
+    }
+
+    &:last-of-type {
+      padding-right: 24px;
+    }
+  }
+
+  .md-data-table__select {
+    width: $data-table-select-width;
+  }
+
+  .md-data-table__cell--non-numeric {
+    text-align: left;
+  }
+
+}
+
+[md-data-thead] {
+  // Ensure nested dividers are properly positioned
+  padding-bottom: 3px;
+
+  &.md-proxy-focus.md-focused .md-no-style {
+    transition: background-color 0.15s linear;
+  }
+  &.md-clickable:hover {
+    cursor: pointer;
+  }
+
+  th {
+    position: relative;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    font-weight: bold; //700;
+    height: $data-table-row-height;
+    font-size: $data-table-header-font-size;
+    color: $data-table-header-color;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+
+    &.md-data-table__header--sorted-ascending,
+    &.md-data-table__header--sorted-descending {
+      color: $data-table-header-sorted-color;
+      &:before {
+        // TODO replace icon.
+        // @include typo-icon;
+        font-size: $data-table-header-sort-icon-size;
+        content: "\e5d8";
+        margin-right: 5px;
+        vertical-align: sub;
+      }
+      &:hover {
+        cursor: pointer;
+        &:before {
+          color: $data-table-header-sorted-icon-hover-color;
+        }
+      }
+    }
+    &.md-data-table__header--sorted-descending:before {
+      content: "\e5db";
+    }
+  }
+
+}
+
+[md-data-tbody] {
+  tr {
+    position: relative;
+    height: $data-table-row-height;
+
+    //TODO replace following MDL animation mixin:
+    // @include material-animation-default(0.28s);
+    transition-property: background-color;
+
+    &.is-selected {
+      background-color: $data-table-selection-color;
+    }
+
+    &:hover {
+      background-color: $data-table-hover-color;
+    }
+  }
+
+  td {
+    position: relative;
+    vertical-align: middle;
+    height: $data-table-row-height;
+    border-top: $data-table-dividers;
+    border-bottom: $data-table-dividers;
+    padding-top: $data-table-cell-top;
+    box-sizing: border-box;
+
+    .mdl-data-table__select {
+      vertical-align: middle;
+    }
+  }
+}

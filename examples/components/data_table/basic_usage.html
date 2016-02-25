@@ -1,0 +1,22 @@
+<div>
+  <md-content>
+    <table md-data-table>
+      <thead md-data-thead>
+        <tr>
+          <th class="md-data-table__cell--non-numeric">Material</th>
+          <th>Quantity</th>
+          <th>Unit price</th>
+        </tr>
+      </thead>
+      <tbody md-data-tbody>
+        <tr *ngFor="#item of materials; #index = index">
+          <td class="md-data-table__cell--non-numeric">
+            {{ item.type }}
+          </td>
+          <td>{{ item.qty }}</td>
+          <td>{{ item.price }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </md-content>
+</div>

@@ -9,6 +9,8 @@ export * from './components/checkbox/checkbox';
 import {MdContent} from './components/content/content';
 export * from './components/content/content';
 
+import {MdDataTable, MdDataThead, MdDataTbody} from './components/data_table/data_table';
+
 export * from './components/dialog/dialog';
 import {MdDialog} from './components/dialog/dialog';
 
@@ -80,6 +82,9 @@ export const MATERIAL_DIRECTIVES: Type[] = CONST_EXPR([
   MdAnchor, MdButton,
   MdCheckbox,
   MdContent,
+  MdDataTable,
+  MdDataThead,
+  MdDataTbody,
   MdDivider,
   MdIcon,
   MdInk,
