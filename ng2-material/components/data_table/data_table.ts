@@ -1,16 +1,20 @@
-import {Directive} from "angular2/core";
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
-import {ElementRef} from "angular2/core";
-import {AfterViewInit} from "angular2/core";
-import {QueryList} from "angular2/core";
-import {Query} from "angular2/core";
-import {Component} from "angular2/core";
-import {ViewEncapsulation} from "angular2/core";
-import {Renderer} from "angular2/core";
-import {View} from "angular2/core";
-import {Attribute} from "angular2/core";
-import {DynamicComponentLoader, ComponentRef} from "angular2/core";
-import {Input} from "angular2/core";
+import {
+  Directive,
+  Host,
+  Component,
+  ElementRef,
+  AfterViewInit,
+  QueryList,
+  Query,
+  ViewEncapsulation,
+  Renderer,
+  View,
+  Attribute,
+  DynamicComponentLoader,
+  ComponentRef,
+  Input
+} from "angular2/core";
 import {MdCheckbox} from "../checkbox/checkbox";
 import {MdDivider} from "../divider/divider";
 
@@ -45,27 +49,40 @@ import {MdDivider} from "../divider/divider";
   selector: 'md-data-table',
   host: {
     'role': 'table',
-    'class': 'md-card md-data-table-container'
+    'class': ''
   }
 })
 export class MdDataTable {
-  // @Input('selectable') selectable: Boolean;
 
-  //add 'card'ness to its host via host attribute?
+  @Input() selectable: Boolean = true;
+
+  constructor() {
+    console.log('parent.selectable', this.selectable);
+  }
 }
 
 @Directive({
   selector: 'md-data-thead',
-  host: {
+  /*host: {
 
-  }
+  }*/
 })
 export class MdDataThead implements AfterViewInit {
-  constructor(private _element: ElementRef) {
+  
+  @Input() selectable: Boolean;
+
+  mdDataTable: MdDataTable;
+
+  constructor(private _element: ElementRef,
+    @Host() mdDataTable: MdDataTable) {
+    this.mdDataTable = mdDataTable;
+
+    console.log('child.selectable', this.selectable);
   }
 
   ngAfterViewInit(): any {
     this.styleChildren();
+    console.log('table?', this.mdDataTable);
   }
 
   styleChildren() {
