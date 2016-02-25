@@ -91,7 +91,6 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
 }
 
 [md-data-thead] {
-  // Ensure nested dividers are properly positioned
   padding-bottom: 3px;
 
   &.md-proxy-focus.md-focused .md-no-style {
@@ -141,9 +140,8 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
   tr {
     position: relative;
     height: $data-table-row-height;
-
-    //TODO replace following MDL animation mixin:
-    // @include material-animation-default(0.28s);
+    transition-duration: 0.28s;
+    transition-timing-function: $fast-out-slow-in-timing-function;
     transition-property: background-color;
 
     &.is-selected {
