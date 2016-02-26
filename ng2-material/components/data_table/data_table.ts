@@ -1,63 +1,130 @@
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {
-  Directive,
-  Host,
-  Component,
-  ElementRef,
   AfterViewInit,
-  QueryList,
+  Attribute,
+  Component,
+  ComponentRef,
+  Directive,
+  DynamicComponentLoader,
+  ElementRef,
+  Host,
+  Input,
+  Pipe, PipeTransform,
   Query,
-  ViewEncapsulation,
+  QueryList,
   Renderer,
   View,
-  Attribute,
-  DynamicComponentLoader,
-  ComponentRef,
-  Input
+  ViewEncapsulation,
 } from "angular2/core";
 import {MdCheckbox} from "../checkbox/checkbox";
 import {MdDivider} from "../divider/divider";
 
+export interface MdDataTableColumn {
+  title: String;
+  numeric?: boolean;
+  hidden?: boolean;
+}
+
+export interface MdDataTableColumnSortable extends MdDataTableColumn {
+  sortable
+}
+
+export interface MdDataTableColumns {
+  [index: number]: MdDataTableColumn; 
+}
 
 /**
  * @description
- * The `md-data-table` directive is a decorative container for a <table>.
+ * The `md-data-table` class names can be used to style any <table>.
  *
  * @usage
  * <hljs lang="html">
  * <table md-data-table>
  *    <thead md-data-thead>
  *      <tr>
- *        <th class="md-data-table__cell--non-numeric">Material</th>
- *        <th>Quantity</th>
- *        <th>Unit price</th>
+ *        <th>Material</th>
+ *        <th class="md-data-column--numeric">Unit price</th>
  *      </tr>
  *    </thead>
  *    <tbody md-data-tbody>
  *      <tr *ngFor="#item of materials; #index = index">
- *        <td class="md-data-table__cell--non-numeric">
- *          {{ item.type }}
- *        </td>
- *        <td>{{ item.qty }}</td>
- *        <td>{{ item.price }}</td>
+ *        <td>{{ item.type }}</td>
+ *        <td class="md-data-column--numeric">{{ item.price }}</td>
  *      </tr>
  *    </tbody>
  *  </table>
  * </hljs>
+ *
+ * @description
+ * Or for more complex use cases, use <md-data-table> component, with
+ * column definitions for things like column sorting, showing/hiding, etc.:
+ * 
+ * 
  */
-@Directive({
+@Component({
   selector: 'md-data-table',
   host: {
     'role': 'table',
     'class': ''
-  }
+  },
+  // inputs: ['columns'],
+  // pipes: [MdDataVisibleColumns],
+  directives: [MdCheckbox],
+  template: `
+  <table class="md-data-table">
+    <thead md-data-thead>
+      <tr>
+        <th *ngIf="selectable" class="md-data-check-cell">
+          <md-checkbox (click)="headCheckClick"></md-checkbox>
+        </th>
+        <th *ngFor="#column of columns"
+            [class.md-data-column--numeric]="column.numeric"
+            (click)="selectedColumn($event)">
+          {{column.title}}
+        </th>
+      </tr>
+    </thead>
+    <tbody md-data-tbody>
+      <tr *ngFor="#item of model; #index = index">
+        <td *ngIf="selectable" class="md-data-check-cell">
+          <md-checkbox (click)="rowCheckClick"></md-checkbox>
+        </td>
+        <td>{{item.type}}</td>
+        <ng-content [item]="item"></ng-content>
+      </tr>
+    </tbody>
+  </table>`
 })
 export class MdDataTable {
 
-  @Input() selectable: Boolean = true;
+  @Input() selectable: boolean;
+  @Input() columns: MdDataTableColumn[];
+  @Input() sortable: boolean;
+  @Input() model: any;
 
   constructor() {
-    console.log('parent.selectable', this.selectable);
+    
+  }
+
+  selectedColumn(e) {
+    console.log('Column Selected', e);
+    if (this.sortable) {
+
+    }
+  }
+
+  ngAfterViewInit() {
+    /*console.log('selectable', this.selectable);
+    console.log('columns', this.columns);
+    console.log('model?', this.model);*/
+  }
+
+  headCheckClick(e) {
+
+  }
+
+  rowCheckClick(e) {
+
   }
 }
 
@@ -155,4 +222,11 @@ export class MdDataTbody implements AfterViewInit {
 export class MdDataCheckbox {
   // wait and see if we _need_ this.
   // I don't think we will.
+}
+
+@Pipe({ name: 'mdDataVisibleColumns' })
+export class MdDataVisibleColumns implements PipeTransform {
+  transform(columns: MdDataTableColumn[]) {
+    return columns.filter(column => !column.hidden);
+  }
 }

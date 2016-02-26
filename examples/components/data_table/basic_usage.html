@@ -1,20 +1,21 @@
 <div>
   <md-content>
-    <table md-data-table>
-      <thead md-data-thead>
+    <md-subheader>Class names can be used to style any HTML table:</md-subheader>
+    <table class="md-data-table">
+      <thead class="md-data-thead">
         <tr>
-          <th class="md-data-table__cell--non-numeric">Material</th>
-          <th>Quantity</th>
-          <th>Unit price</th>
+          <th>Material</th>
+          <th class="md-data-column--numeric">Quantity</th>
+          <th class="md-data-column--numeric">Unit price</th>
         </tr>
       </thead>
-      <tbody md-data-tbody>
+      <tbody class="md-data-tbody">
         <tr *ngFor="#item of materials; #index = index">
-          <td class="md-data-table__cell--non-numeric">
+          <td>
             {{ item.type }}
           </td>
-          <td>{{ item.qty }}</td>
-          <td>{{ item.price }}</td>
+          <td class="md-data-column--numeric">{{ item.qty }}</td>
+          <td class="md-data-column--numeric">{{ item.price }}</td>
         </tr>
       </tbody>
     </table>

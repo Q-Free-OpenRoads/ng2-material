@@ -55,7 +55,7 @@ $list-item-height: 6 * $baseline-grid !default;
 $list-item-two-line-height: 9 * $baseline-grid !default;
 $list-item-three-line-height: 11 * $baseline-grid !default; */
 
-[md-data-table] {
+[md-data-table], .md-data-table {
   position: relative;
   border: $data-table-dividers;
   border-collapse: collapse;
@@ -67,7 +67,7 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
 
   td, th {
     padding: 0 $data-table-column-padding rem(1.2) $data-table-column-padding;
-    text-align: right;
+    text-align: left;
 
     &:first-of-type {
       padding-left: 24px;
@@ -76,19 +76,30 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
     &:last-of-type {
       padding-right: 24px;
     }
+
+    &.md-data-check-cell {
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-right: 24px - $data-table-column-padding;
+      width: 2.4rem;
+    }
   }
 
   .md-data-table__select {
     width: $data-table-select-width;
   }
 
-  .md-data-table__cell--non-numeric {
+  /* .md-data-table__cell--non-numeric {
     text-align: left;
+  } */
+
+  .md-data-column--numeric {
+    text-align: right;
   }
 
 }
 
-[md-data-thead] {
+[md-data-thead], .md-data-thead {
   padding-bottom: 3px;
 
   &.md-proxy-focus.md-focused .md-no-style {
@@ -113,7 +124,7 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
     &.md-data-table__header--sorted-descending {
       color: $data-table-header-sorted-color;
       &:before {
-        // TODO replace icon.
+        // TODO replace sorting icon.
         // @include typo-icon;
         font-size: $data-table-header-sort-icon-size;
         content: "\e5d8";
@@ -134,7 +145,7 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
 
 }
 
-[md-data-tbody] {
+[md-data-tbody], .md-data-tbody {
   tr {
     position: relative;
     height: $data-table-row-height;

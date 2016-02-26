@@ -20,6 +20,7 @@ import CheckboxBasicUsage from "./components/checkbox/basic_usage";
 import CheckboxSyncing from "./components/checkbox/syncing";
 import ListBasicUsage from "./components/list/basic_usage";
 import DataTableBasicUsage from "./components/data_table/basic_usage";
+import DataTableComponent from "./components/data_table/components";
 import InputBasicUsage from "./components/input/basic_usage";
 import InputFormBuilder from "./components/input/form_builder";
 import WhiteframeBasicUsage from "./components/whiteframe/basic_usage";
@@ -37,6 +38,7 @@ export const DEMO_DIRECTIVES: Type[] = CONST_EXPR([
   InputFormBuilder,
   ListBasicUsage,
   DataTableBasicUsage,
+  DataTableComponent,
   RadioBasicUsage,
   SwitchBasicUsage,
   TabsDynamicHeight,
