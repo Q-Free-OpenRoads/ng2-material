@@ -4,6 +4,7 @@ import {
   Attribute,
   Component,
   ComponentRef,
+  ContentChildren,
   Directive,
   DynamicComponentLoader,
   ElementRef,
@@ -19,6 +20,13 @@ import {
 import {MdCheckbox} from "../checkbox/checkbox";
 import {MdDivider} from "../divider/divider";
 
+import {MdDataCell} from './data_table_cell';
+export {MdDataCell} from './data_table_cell';
+import {MdDataTbody} from './data_table_body';
+export {MdDataTbody} from './data_table_body';
+import {MdDataThead} from './data_table_head';
+export {MdDataThead} from './data_table_head';
+
 export interface MdDataTableColumn {
   title: String;
   numeric?: boolean;
@@ -31,6 +39,19 @@ export interface MdDataTableColumnSortable extends MdDataTableColumn {
 
 export interface MdDataTableColumns {
   [index: number]: MdDataTableColumn; 
+}
+
+@Component({
+  selector: 'md-data-row',
+  template: `<ng-content></ng-content>`
+})
+export class MdDataRow {
+  @Input() data: any;
+
+  constructor() {
+
+  }
+
 }
 
 /**
@@ -69,7 +90,7 @@ export interface MdDataTableColumns {
   },
   // inputs: ['columns'],
   // pipes: [MdDataVisibleColumns],
-  directives: [MdCheckbox],
+  directives: [MdCheckbox, MdDataCell, MdDataRow],
   template: `
   <table class="md-data-table">
     <thead md-data-thead>
@@ -77,20 +98,19 @@ export interface MdDataTableColumns {
         <th *ngIf="selectable" class="md-data-check-cell">
           <md-checkbox (click)="headCheckClick"></md-checkbox>
         </th>
-        <th *ngFor="#column of columns"
+        <th *ngFor="#column of columns; #columnIndex = index"
             [class.md-data-column--numeric]="column.numeric"
-            (click)="selectedColumn($event)">
+            (click)="selectedColumn($event, columnIndex)">
           {{column.title}}
         </th>
       </tr>
     </thead>
     <tbody md-data-tbody>
-      <tr *ngFor="#item of model; #index = index">
+      <tr *ngFor="#item of model; #index = index" [ngForTemplate]='MdDataRow'>
         <td *ngIf="selectable" class="md-data-check-cell">
           <md-checkbox (click)="rowCheckClick"></md-checkbox>
         </td>
-        <td>{{item.type}}</td>
-        <ng-content [item]="item"></ng-content>
+        <ng-content></ng-content>
       </tr>
     </tbody>
   </table>`
@@ -102,12 +122,14 @@ export class MdDataTable {
   @Input() sortable: boolean;
   @Input() model: any;
 
+  @ContentChildren(MdDataCell) contentChildren: QueryList<MdDataCell>; 
+
   constructor() {
     
   }
 
-  selectedColumn(e) {
-    console.log('Column Selected', e);
+  selectedColumn(event, index) {
+    console.log('Column Selected', index, event);
     if (this.sortable) {
 
     }
@@ -119,114 +141,16 @@ export class MdDataTable {
     console.log('model?', this.model);*/
   }
 
+  ngAfterContentInit() {
+    //content children should be ready.
+    console.log("contentChildren", this.contentChildren);
+  }
+
   headCheckClick(e) {
 
   }
 
   rowCheckClick(e) {
 
-  }
-}
-
-@Directive({
-  selector: 'md-data-thead',
-  /*host: {
-
-  }*/
-})
-export class MdDataThead implements AfterViewInit {
-  
-  @Input() selectable: Boolean;
-
-  mdDataTable: MdDataTable;
-
-  constructor(private _element: ElementRef,
-    @Host() mdDataTable: MdDataTable) {
-    this.mdDataTable = mdDataTable;
-
-    console.log('child.selectable', this.selectable);
-  }
-
-  ngAfterViewInit(): any {
-    this.styleChildren();
-    console.log('table?', this.mdDataTable);
-  }
-
-  styleChildren() {
-    let el = this._element.nativeElement;
-    var rows = DOM.querySelectorAll(el, 'tr');
-    var cells = DOM.querySelectorAll(el, 'td');
-
-    if (rows) {
-      // apply row styles, etc.
-      for (let i = 0; i < rows.length; i++) {
-
-      }
-
-      if (cells) {
-        //apply cell styles, etc.
-        for (let i = 0; i < cells.length; i++) {
-
-        }
-      }
-    }
-  }
-}
-
-@Directive({
-  selector: 'md-data-tbody',
-  host: {
-
-  }
-})
-export class MdDataTbody implements AfterViewInit {
-  constructor(private _element: ElementRef) {
-  }
-
-  ngAfterViewInit(): any {
-    this.styleChildren();
-  }
-
-  styleChildren() {
-    //TODO DRY this up with thead style application?
-    let el = this._element.nativeElement;
-    var rows = DOM.querySelectorAll(el, 'tr');
-    var cells = DOM.querySelectorAll(el, 'td');
-
-    if (rows) {
-      // apply row styles, etc.
-      for (let i = 0; i < rows.length; i++) {
-
-      }
-
-      if (cells) {
-        //apply cell styles, etc.
-        for (let i = 0; i < cells.length; i++) {
-
-        }
-      }
-    }
-  }
-}
-
-@Component({
-  selector: 'md-data-checkbox',
-  host: {
-
-  },
-  template: `
-    <MdCheckbox></MdCheckbox>`,
-  properties: ['wrap'],
-  directives: [MdCheckbox]
-})
-export class MdDataCheckbox {
-  // wait and see if we _need_ this.
-  // I don't think we will.
-}
-
-@Pipe({ name: 'mdDataVisibleColumns' })
-export class MdDataVisibleColumns implements PipeTransform {
-  transform(columns: MdDataTableColumn[]) {
-    return columns.filter(column => !column.hidden);
   }
 }

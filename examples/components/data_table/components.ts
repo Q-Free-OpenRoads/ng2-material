@@ -14,10 +14,12 @@ export default class DataTableComponent {
       title: "Material"
     },
     {
-      title: "Quantity"
+      title: "Quantity",
+      numeric: true
     },
     {
-      title: "Unit price"
+      title: "Unit price",
+      numeric: true
     },
   ];
   
