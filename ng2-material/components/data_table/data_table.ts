@@ -4,6 +4,7 @@ import {
   Attribute,
   Component,
   ComponentRef,
+  ContentChild,
   ContentChildren,
   Directive,
   DynamicComponentLoader,
@@ -14,7 +15,9 @@ import {
   Query,
   QueryList,
   Renderer,
+  TemplateRef,
   View,
+  ViewContainerRef,
   ViewEncapsulation,
 } from "angular2/core";
 import {MdCheckbox} from "../checkbox/checkbox";
@@ -26,6 +29,8 @@ import {MdDataTbody} from './data_table_body';
 export {MdDataTbody} from './data_table_body';
 import {MdDataThead} from './data_table_head';
 export {MdDataThead} from './data_table_head';
+import {MdDataRow} from './data_table_row';
+export {MdDataRow} from './data_table_row';
 
 export interface MdDataTableColumn {
   title: String;
@@ -41,18 +46,6 @@ export interface MdDataTableColumns {
   [index: number]: MdDataTableColumn; 
 }
 
-@Component({
-  selector: 'md-data-row',
-  template: `<ng-content></ng-content>`
-})
-export class MdDataRow {
-  @Input() data: any;
-
-  constructor() {
-
-  }
-
-}
 
 /**
  * @description
@@ -91,6 +84,7 @@ export class MdDataRow {
   // inputs: ['columns'],
   // pipes: [MdDataVisibleColumns],
   directives: [MdCheckbox, MdDataCell, MdDataRow],
+  // providers: [TemplateRef],
   template: `
   <table class="md-data-table">
     <thead md-data-thead>
@@ -106,15 +100,11 @@ export class MdDataRow {
       </tr>
     </thead>
     <tbody md-data-tbody>
-      <tr *ngFor="#item of model; #index = index" [ngForTemplate]='MdDataRow'>
-        <td *ngIf="selectable" class="md-data-check-cell">
-          <md-checkbox (click)="rowCheckClick"></md-checkbox>
-        </td>
-        <ng-content></ng-content>
-      </tr>
+      <template ngFor #item [ngForOf]="model" [ngForTemplate]="rowImpl"></template>
     </tbody>
   </table>`
 })
+      // <template ngFor "#item" [ngForOf]="model" #rowIndex="index" [ngForTemplate]=mdDataRow>
 export class MdDataTable {
 
   @Input() selectable: boolean;
@@ -122,10 +112,15 @@ export class MdDataTable {
   @Input() sortable: boolean;
   @Input() model: any;
 
-  @ContentChildren(MdDataCell) contentChildren: QueryList<MdDataCell>; 
+  @ContentChild(TemplateRef) rowImpl;
+  // @ContentChildren(MdDataCell) contentChildren: QueryList<MdDataCell>; 
 
-  constructor() {
-    
+  // mdDataRow: MdDataRow;
+
+  constructor(/*mdDataRow: MdDataRow*/
+    //public rowImpl: TemplateRef
+    ) {
+    /*this.mdDataRow = mdDataRow*/;
   }
 
   selectedColumn(event, index) {
@@ -143,7 +138,8 @@ export class MdDataTable {
 
   ngAfterContentInit() {
     //content children should be ready.
-    console.log("contentChildren", this.contentChildren);
+    // console.log("contentChildren", this.contentChildren);
+    console.log("rowImpl", this.rowImpl);
   }
 
   headCheckClick(e) {
