@@ -20,8 +20,9 @@ import {
 import {MdCheckbox} from "../checkbox/checkbox";
 
 @Component({
-  selector: 'md-data-row',
+  selector: '[md-data-row]',
   directives: [MdCheckbox],
+  inputs: ['data'],
   template: `
     <td *ngIf="selectable" class="md-data-check-cell">
       <md-checkbox (click)="rowCheckClick"></md-checkbox>
@@ -34,7 +35,11 @@ export class MdDataRow {
   @Input() selectable: boolean;
 
   constructor() {
+    console.log('hello data row component.');
+  }
 
+  ngAfterContentInit() {
+    console.log("row data", this.data);
   }
 
 }

@@ -115,12 +115,7 @@ export class MdDataTable {
   @ContentChild(TemplateRef) rowImpl;
   // @ContentChildren(MdDataCell) contentChildren: QueryList<MdDataCell>; 
 
-  // mdDataRow: MdDataRow;
-
-  constructor(/*mdDataRow: MdDataRow*/
-    //public rowImpl: TemplateRef
-    ) {
-    /*this.mdDataRow = mdDataRow*/;
+  constructor() {
   }
 
   selectedColumn(event, index) {
@@ -131,15 +126,11 @@ export class MdDataTable {
   }
 
   ngAfterViewInit() {
-    /*console.log('selectable', this.selectable);
-    console.log('columns', this.columns);
-    console.log('model?', this.model);*/
+
   }
 
   ngAfterContentInit() {
-    //content children should be ready.
-    // console.log("contentChildren", this.contentChildren);
-    console.log("rowImpl", this.rowImpl);
+
   }
 
   headCheckClick(e) {
