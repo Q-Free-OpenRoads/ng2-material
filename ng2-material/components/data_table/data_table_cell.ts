@@ -21,18 +21,20 @@ import {
 import {MdDataTable} from './data_table';
 
 @Directive({
-  selector: 'md-data-cell'
+  selector: '[md-data-cell]'
+
 })
 export class MdDataCell {
   // Mostly a handle for passing data down.
   mdDataTable: MdDataTable;
 
-  constructor(private _element: ElementRef,
-    @Host() mdDataTable: MdDataTable) {
-    this.mdDataTable = mdDataTable;
+  constructor(private _element: ElementRef
+    // @Host() mdDataTable: MdDataTable
+    ) {
+    // this.mdDataTable = mdDataTable;
   }
 
   ngAfterViewInit() {
-    console.log('cell table?', this.mdDataTable);
+    // console.log('cell table?', this.mdDataTable);
   }
 }

@@ -1,12 +1,14 @@
 <div>
   <md-content>
     <md-data-table [columns]="columns" [selectable]="true" [model]="materials">
-      <template #item>
-        <tr md-data-row [data]="item" [selectable]="true">
-          <td md-data-cell>{{item.type}}</td>
-          <td md-data-cell class="md-data-column--numeric">{{item.qty}}</td>
-          <td md-data-cell class="md-data-column--numeric">{{item.price}}</td>
-        </tr>
+      <template #data>
+        <td md-data-cell>data.type</td>
+      </template>
+      <template #data>
+        <td md-data-cell class="md-data-column--numeric">data.qty</td>
+      </template>
+      <template #data>
+        <td md-data-cell class="md-data-column--numeric">data.price</td>
       </template>
     </md-data-table>
   </md-content>

@@ -18,13 +18,29 @@ import {
   ViewEncapsulation,
 } from "angular2/core";
 
-@Directive({
-  selector: 'md-data-tbody',
-  host: {
+import {MdDataTableColumn} from './data_table';
+import {MdDataRow} from './data_table_row';
 
-  }
+@Directive({
+  selector: '[md-data-tbody]',
+  /*  host: {
+    ''
+    },*/
+  // directives: [MdDataRow],
+  /*template: `
+  <!-- <template ngFor #item [ngForOf]="model" #rowIndex="index"> -->
+    <tr *ngFor="#item of model">
+      <td>.</td><td>.</td><td>.</td>
+    </tr>
+  <!-- </template> -->
+  `*/
 })
 export class MdDataTbody implements AfterViewInit {
+  
+  @Input() selectable: boolean;
+  @Input() columns: MdDataTableColumn[];
+  @Input() model: any;
+
   constructor(private _element: ElementRef) {
   }
 

@@ -83,7 +83,7 @@ export interface MdDataTableColumns {
   },
   // inputs: ['columns'],
   // pipes: [MdDataVisibleColumns],
-  directives: [MdCheckbox, MdDataCell, MdDataRow],
+  directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody],
   // providers: [TemplateRef],
   template: `
   <table class="md-data-table">
@@ -99,8 +99,11 @@ export interface MdDataTableColumns {
         </th>
       </tr>
     </thead>
-    <tbody md-data-tbody>
-      <template ngFor #item [ngForOf]="model" [ngForTemplate]="rowImpl"></template>
+    <tbody md-data-tbody [model]="model" [columns]="columns">
+      <tr md-data-row *ngFor="#item of model" [cells]="dataCells"
+          [selectable]="selectable"
+          [data]="item"
+          [templ]=cellTemplates></tr>
     </tbody>
   </table>`
 })
@@ -112,10 +115,10 @@ export class MdDataTable {
   @Input() sortable: boolean;
   @Input() model: any;
 
-  @ContentChild(TemplateRef) rowImpl;
-  // @ContentChildren(MdDataCell) contentChildren: QueryList<MdDataCell>; 
+  @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
+  @ContentChildren(MdDataCell) dataCells: QueryList<MdDataCell>; 
 
-  constructor() {
+  constructor(private _viewContainer: ViewContainerRef) {
   }
 
   selectedColumn(event, index) {
@@ -126,18 +129,19 @@ export class MdDataTable {
   }
 
   ngAfterViewInit() {
-
+    // this._viewContainer
   }
 
   ngAfterContentInit() {
-
+    // console.log('cellTemplates', this.cellTemplates);
+    // console.log('contentChildren', this.dataCells);
   }
 
   headCheckClick(e) {
 
   }
 
-  rowCheckClick(e) {
-
+  rowCheckClick(e, item) {
+    console.log('item', item);
   }
 }
