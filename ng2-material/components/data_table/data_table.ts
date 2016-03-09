@@ -1,14 +1,6 @@
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {
-  AfterViewInit,
-  Attribute,
   Component,
-  ComponentRef,
-  ContentChild,
   ContentChildren,
-  Directive,
-  DynamicComponentLoader,
-  ElementRef,
   Host,
   Input,
   Pipe, PipeTransform,
@@ -81,10 +73,7 @@ export interface MdDataTableColumns {
     'role': 'table',
     'class': ''
   },
-  // inputs: ['columns'],
-  // pipes: [MdDataVisibleColumns],
   directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody],
-  // providers: [TemplateRef],
   template: `
   <table class="md-data-table">
     <thead md-data-thead>
@@ -102,12 +91,12 @@ export interface MdDataTableColumns {
     <tbody md-data-tbody [model]="model" [columns]="columns">
       <tr md-data-row *ngFor="#item of model" [cells]="dataCells"
           [selectable]="selectable"
+          [columns]=columns
           [data]="item"
-          [templ]=cellTemplates></tr>
+          [templs]=cellTemplates></tr>
     </tbody>
   </table>`
 })
-      // <template ngFor "#item" [ngForOf]="model" #rowIndex="index" [ngForTemplate]=mdDataRow>
 export class MdDataTable {
 
   @Input() selectable: boolean;
@@ -116,7 +105,6 @@ export class MdDataTable {
   @Input() model: any;
 
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
-  @ContentChildren(MdDataCell) dataCells: QueryList<MdDataCell>; 
 
   constructor(private _viewContainer: ViewContainerRef) {
   }
@@ -126,15 +114,6 @@ export class MdDataTable {
     if (this.sortable) {
 
     }
-  }
-
-  ngAfterViewInit() {
-    // this._viewContainer
-  }
-
-  ngAfterContentInit() {
-    // console.log('cellTemplates', this.cellTemplates);
-    // console.log('contentChildren', this.dataCells);
   }
 
   headCheckClick(e) {

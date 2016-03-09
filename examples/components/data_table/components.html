@@ -1,15 +1,10 @@
 <div>
   <md-content>
     <md-data-table [columns]="columns" [selectable]="true" [model]="materials">
-      <template>
-        data.type
-      </template>
-      <template>
-        data.qty
-      </template>
-      <template>
-        data.price
-      </template>
+      <!-- Define cell templates. Should match colums 1:1 -->
+      <template #material="data">{{material.type}}</template>
+      <template #material="data">{{material.qty}}</template>
+      <template #material="data">{{material.price}}</template>
     </md-data-table>
   </md-content>
 </div>

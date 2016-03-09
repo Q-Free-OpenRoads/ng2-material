@@ -1,40 +1,24 @@
-import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {
-  AfterViewInit,
-  Attribute,
-  Component,
-  ComponentRef,
-  ContentChildren,
   Directive,
-  DynamicComponentLoader,
-  ElementRef,
-  Host,
+  EmbeddedViewRef,
   Input,
-  Pipe, PipeTransform,
-  Query,
-  QueryList,
-  Renderer,
-  View,
-  ViewEncapsulation,
+  TemplateRef,
+  ViewContainerRef
 } from "angular2/core";
-
-import {MdDataTable} from './data_table';
 
 @Directive({
   selector: '[md-data-cell]'
-
 })
 export class MdDataCell {
-  // Mostly a handle for passing data down.
-  mdDataTable: MdDataTable;
+  @Input() data: any;
+  @Input() templ: TemplateRef;
 
-  constructor(private _element: ElementRef
-    // @Host() mdDataTable: MdDataTable
-    ) {
-    // this.mdDataTable = mdDataTable;
-  }
+  childView: EmbeddedViewRef;
 
-  ngAfterViewInit() {
-    // console.log('cell table?', this.mdDataTable);
+  constructor(private _viewContainer: ViewContainerRef) { }
+
+  ngOnInit() {
+    this.childView = this._viewContainer.createEmbeddedView(this.templ);
+    this.childView.setLocal('data', this.data);
   }
 }
