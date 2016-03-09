@@ -89,10 +89,6 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
     width: $data-table-select-width;
   }
 
-  /* .md-data-table__cell--non-numeric {
-    text-align: left;
-  } */
-
   .md-data-column--numeric, .md-data-column--align-right {
     text-align: right;
   }

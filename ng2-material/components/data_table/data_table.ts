@@ -89,7 +89,7 @@ export interface MdDataTableColumns {
     <thead md-data-thead>
       <tr>
         <th *ngIf="selectable" class="md-data-check-cell">
-          <md-checkbox (click)="headCheckClick"></md-checkbox>
+          <md-checkbox [checked]="allSelected" (click)="toggleAllSelection()"></md-checkbox>
         </th>
         <th *ngFor="#column of columns; #columnIndex = index"
             [ngClass]="column | dataColumnAlign"
@@ -103,6 +103,7 @@ export interface MdDataTableColumns {
           [selectable]="selectable"
           [columns]=columns
           [data]="item"
+          [class.is-selected]="item.selected"
           [templs]=cellTemplates></tr>
     </tbody>
   </table>`
@@ -113,6 +114,8 @@ export class MdDataTable {
   @Input() columns: MdDataTableColumn[];
   @Input() sortable: boolean;
   @Input() model: any;
+
+  allSelected: boolean;
 
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
 
@@ -126,11 +129,14 @@ export class MdDataTable {
     }
   }
 
-  headCheckClick(e) {
-
+  toggleAllSelection() {
+    // (Samjones) - Is this too simplistic? When the time for filtering rows comes
+    // this will select even hidden rows. Probably best to assume row-hiding is done
+    // as parent component mutates the model.
+    this.allSelected = !this.allSelected;
+    for (var i in this.model) {
+      this.model[i].selected = this.allSelected;
+    }
   }
 
-  rowCheckClick(e, item) {
-    console.log('item', item);
-  }
 }

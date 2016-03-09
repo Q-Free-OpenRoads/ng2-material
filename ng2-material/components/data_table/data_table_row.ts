@@ -17,7 +17,7 @@ import {DataColumnAlign} from './data_table_pipes';
   pipes: [DataColumnAlign],
   template: `
     <td *ngIf="selectable" class="md-data-check-cell">
-      <md-checkbox (click)="rowCheckClick"></md-checkbox>
+      <md-checkbox [(checked)]="data.selected"></md-checkbox>
     </td>
     <td *ngFor="#cell of templs; #i=index"
         [ngClass]="getColumn(i) | dataColumnAlign">
@@ -53,4 +53,5 @@ export class MdDataRow {
   getColumn(i) {
     return this.columns[i];
   }
+  
 }
