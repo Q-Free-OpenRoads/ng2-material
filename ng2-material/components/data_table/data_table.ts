@@ -24,10 +24,19 @@ export {MdDataThead} from './data_table_head';
 import {MdDataRow} from './data_table_row';
 export {MdDataRow} from './data_table_row';
 
+import {DataColumnAlign} from './data_table_pipes';
+
+export interface MD_DATA_COLUMN_ALIGN {
+  RIGHT: 'right',
+  LEFT: 'left',
+  CENTER: 'center'
+}
+
 export interface MdDataTableColumn {
   title: String;
   numeric?: boolean;
   hidden?: boolean;
+  align?: string;
 }
 
 export interface MdDataTableColumnSortable extends MdDataTableColumn {
@@ -73,6 +82,7 @@ export interface MdDataTableColumns {
     'role': 'table',
     'class': ''
   },
+  pipes: [DataColumnAlign],
   directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody],
   template: `
   <table class="md-data-table">
@@ -82,7 +92,7 @@ export interface MdDataTableColumns {
           <md-checkbox (click)="headCheckClick"></md-checkbox>
         </th>
         <th *ngFor="#column of columns; #columnIndex = index"
-            [class.md-data-column--numeric]="column.numeric"
+            [ngClass]="column | dataColumnAlign"
             (click)="selectedColumn($event, columnIndex)">
           {{column.title}}
         </th>

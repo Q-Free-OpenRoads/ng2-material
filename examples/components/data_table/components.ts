@@ -15,11 +15,11 @@ export default class DataTableComponent {
     },
     {
       title: "Quantity",
-      numeric: true
+      numeric: true, 
     },
     {
       title: "Unit price",
-      numeric: true
+      align: 'right'
     },
   ];
   

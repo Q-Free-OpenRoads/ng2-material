@@ -93,8 +93,12 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
     text-align: left;
   } */
 
-  .md-data-column--numeric {
+  .md-data-column--numeric, .md-data-column--align-right {
     text-align: right;
+  }
+
+  .md-data-column--align-center {
+    text-align: center;
   }
 
 }
