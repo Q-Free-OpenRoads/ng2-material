@@ -24,19 +24,32 @@ export {MdDataThead} from './data_table_head';
 import {MdDataRow} from './data_table_row';
 export {MdDataRow} from './data_table_row';
 
-import {DataColumnAlign} from './data_table_pipes';
+import {DataColumnAlign, DataColumnSort} from './data_table_pipes';
 
-export interface MD_DATA_COLUMN_ALIGN {
+export const COLUMN_ALIGN = {
   RIGHT: 'right',
   LEFT: 'left',
   CENTER: 'center'
-}
+};
 
 export interface MdDataTableColumn {
+  /** Text to display in column heading. */
   title: String;
+  /** will trigger right text alignment. */
   numeric?: boolean;
+  /** whether a column is hidden. */
   hidden?: boolean;
+  /** efault left. "RIGHT" or "CENTER" to override */
   align?: string;
+  /** model[property] to sort by. Column is sortable if this is present. */
+  sortKey?: string;
+  /**
+   * Comparator for sorting the model for this column.
+   * Column is sortable if this is present. {@link sortKey} is ignored if this is present.
+   */
+  comparator?: function;
+  /** 'ASCENDING' or 'DESCENDING' */
+  sort?: string;
 }
 
 export interface MdDataTableColumnSortable extends MdDataTableColumn {
@@ -47,6 +60,9 @@ export interface MdDataTableColumns {
   [index: number]: MdDataTableColumn; 
 }
 
+export enum ColumnSort {
+  ASCENDING, DESCENDING
+}
 
 /**
  * @description
@@ -82,7 +98,7 @@ export interface MdDataTableColumns {
     'role': 'table',
     'class': ''
   },
-  pipes: [DataColumnAlign],
+  pipes: [DataColumnAlign, DataColumnSort],
   directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody],
   template: `
   <table class="md-data-table">
@@ -93,13 +109,16 @@ export interface MdDataTableColumns {
         </th>
         <th *ngFor="#column of columns; #columnIndex = index"
             [ngClass]="column | dataColumnAlign"
-            (click)="selectedColumn($event, columnIndex)">
+            [class.sortable]="column.sortKey"
+            [class.md-data-table__header--sorted-ascending]="column.sort == 'ASCENDING'"
+            [class.md-data-table__header--sorted-descending]="column.sort == 'DESCENDING'"
+            (click)="sortColumn(column)">
           {{column.title}}
         </th>
       </tr>
     </thead>
     <tbody md-data-tbody [model]="model" [columns]="columns">
-      <tr md-data-row *ngFor="#item of model" [cells]="dataCells"
+      <tr md-data-row *ngFor="#item of model | dataColumnSort:sortingColumn" [cells]="dataCells"
           [selectable]="selectable"
           [columns]=columns
           [data]="item"
@@ -115,17 +134,33 @@ export class MdDataTable {
   @Input() sortable: boolean;
   @Input() model: any;
 
+  //TODO (Samjones) need support for NgFor trackBy
+
   allSelected: boolean;
+  sortingColumn: MdDataTableColumn;
+  static ASCENDING: string = 'ASCENDING';
+  static DESCENDING: string = 'DESCENDING';
 
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
 
   constructor(private _viewContainer: ViewContainerRef) {
   }
 
-  selectedColumn(event, index) {
-    console.log('Column Selected', index, event);
-    if (this.sortable) {
-
+  sortColumn(column) {
+    if (!column.sortKey) {
+      // don't sort by anything, because we don't know how to sort this one
+      return;
+    }
+    if (this.sortingColumn === column) {
+      // invert to ascending/descending
+      column.sort = column.sort === 'DESCENDING' ? 'ASCENDING' : 'DESCENDING';
+    } else {
+      for (var i in this.columns) {
+        delete this.columns[i].sort;
+      }
+      // sort this one ascending:
+      this.sortingColumn = column;
+      column.sort = 'ASCENDING';
     }
   }
 

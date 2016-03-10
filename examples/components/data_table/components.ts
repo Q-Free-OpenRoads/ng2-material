@@ -15,7 +15,8 @@ export default class DataTableComponent {
     },
     {
       title: "Quantity",
-      numeric: true, 
+      numeric: true,
+      sortKey: 'qty'
     },
     {
       title: "Unit price",
