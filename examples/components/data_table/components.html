@@ -4,7 +4,7 @@
       <!-- Define cell templates. Should match colums 1:1 -->
       <template #material="data">{{material.type}}</template>
       <template #material="data">{{material.qty}}</template>
-      <template #material="data">{{material.price}}</template>
+      <template #material="data">${{material.price}}</template>
     </md-data-table>
   </md-content>
 </div>

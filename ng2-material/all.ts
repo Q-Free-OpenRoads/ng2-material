@@ -9,6 +9,7 @@ export * from './components/checkbox/checkbox';
 import {MdContent} from './components/content/content';
 export * from './components/content/content';
 
+export * from './components/data_table/data_table';
 import {MdDataTable, MdDataThead, MdDataTbody, MdDataCell, MdDataRow} from './components/data_table/data_table';
 
 export * from './components/dialog/dialog';

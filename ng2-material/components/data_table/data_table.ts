@@ -32,24 +32,34 @@ export const COLUMN_ALIGN = {
   CENTER: 'center'
 };
 
+export enum Sort {
+  ASCEND, DESCEND
+}
+
 export interface MdDataTableColumn {
   /** Text to display in column heading. */
   title: String;
+
   /** will trigger right text alignment. */
   numeric?: boolean;
+
   /** whether a column is hidden. */
   hidden?: boolean;
+
   /** efault left. "RIGHT" or "CENTER" to override */
   align?: string;
+
   /** model[property] to sort by. Column is sortable if this is present. */
   sortKey?: string;
+
   /**
    * Comparator for sorting the model for this column.
    * Column is sortable if this is present. {@link sortKey} is ignored if this is present.
    */
-  comparator?: function;
-  /** 'ASCENDING' or 'DESCENDING' */
-  sort?: string;
+  comparator?: Function;
+
+  /** ASCEND or DESCEND */
+  sort?: Sort;
 }
 
 export interface MdDataTableColumnSortable extends MdDataTableColumn {
@@ -58,10 +68,6 @@ export interface MdDataTableColumnSortable extends MdDataTableColumn {
 
 export interface MdDataTableColumns {
   [index: number]: MdDataTableColumn; 
-}
-
-export enum ColumnSort {
-  ASCENDING, DESCENDING
 }
 
 /**
@@ -110,8 +116,8 @@ export enum ColumnSort {
         <th *ngFor="#column of columns; #columnIndex = index"
             [ngClass]="column | dataColumnAlign"
             [class.sortable]="column.sortKey"
-            [class.md-data-table__header--sorted-ascending]="column.sort == 'ASCENDING'"
-            [class.md-data-table__header--sorted-descending]="column.sort == 'DESCENDING'"
+            [class.md-data-table__header--sorted-ascending]="column.sort == sort.ASCEND"
+            [class.md-data-table__header--sorted-descending]="column.sort == sort.DESCEND"
             (click)="sortColumn(column)">
           {{column.title}}
         </th>
@@ -140,6 +146,7 @@ export class MdDataTable {
   sortingColumn: MdDataTableColumn;
   static ASCENDING: string = 'ASCENDING';
   static DESCENDING: string = 'DESCENDING';
+  sort: typeof Sort = Sort; // define enum as a class field for template ref.
 
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
 
@@ -153,14 +160,14 @@ export class MdDataTable {
     }
     if (this.sortingColumn === column) {
       // invert to ascending/descending
-      column.sort = column.sort === 'DESCENDING' ? 'ASCENDING' : 'DESCENDING';
+      column.sort = column.sort === Sort.DESCEND ? Sort.ASCEND : Sort.DESCEND;
     } else {
       for (var i in this.columns) {
         delete this.columns[i].sort;
       }
       // sort this one ascending:
       this.sortingColumn = column;
-      column.sort = 'ASCENDING';
+      column.sort = Sort.ASCEND;
     }
   }
 

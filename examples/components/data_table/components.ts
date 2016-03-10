@@ -11,16 +11,17 @@ import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 export default class DataTableComponent {
   columns = [
     {
-      title: "Material"
+      title: "Material",
     },
     {
       title: "Quantity",
-      numeric: true,
+      numeric: true, //aligns column right by default. A good convention.
       sortKey: 'qty'
     },
     {
       title: "Unit price",
-      align: 'right'
+      align: 'right', //specify alignment if you need something specific.
+      sortKey: 'price'
     },
   ];
   
@@ -28,17 +29,17 @@ export default class DataTableComponent {
     {
       type: "Acrylic(Transparent)",
       qty: 25,
-      price: "$2.90"
+      price: 2.90
     },
     {
       type: "Plywood(Birch)",
       qty: 50,
-      price: "$1.25"
+      price: 1.25
     },
     {
       type: "Laminate(Gold on Blue)",
       qty: 10,
-      price: "$2.35"
+      price: 2.35
     }
   ];
 }

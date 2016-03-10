@@ -1,5 +1,5 @@
 import {Pipe} from 'angular2/core';
-import {MdDataTableColumn} from './data_table';
+import {MdDataTableColumn, Sort} from './data_table';
 
 @Pipe({
   name: 'dataColumnAlign'
@@ -39,7 +39,7 @@ export class DataColumnSort {
     } else if (column.sortKey) {
 
       return model.sort((a, b) => {
-        if (column.sort === 'DESCENDING') {
+        if (column.sort === Sort.DESCEND) {
           return a[column.sortKey] < b[column.sortKey] ? 1 : -1;
         }
         return a[column.sortKey] > b[column.sortKey] ? 1 : -1;
