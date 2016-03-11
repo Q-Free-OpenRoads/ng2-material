@@ -1,5 +1,12 @@
 <div>
   <md-content>
+    <md-toolbar style="background: transparent; color: rgba(0, 0, 0, 0.83);">
+      <div class="md-toolbar-tools">
+        <h3>
+          <span>Table With Controls</span>
+        </h3>
+      </div>
+    </md-toolbar>
     <md-data-table [columns]="columns" [selectable]="true" [model]="materials">
       <!-- Define cell templates. Should match colums 1:1 -->
       <template #material="data">{{material.type}}</template>

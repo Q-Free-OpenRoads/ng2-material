@@ -34,15 +34,17 @@ export class DataColumnSort {
     }
 
     if (column.comparator) {
-      // how to tell comparator which direction we're going?
+      return model.sort((a, b) => {
+        //call the comparator with the sort direction:
+        return column.comparator(a, b, column.sort);
+      }); 
 
     } else if (column.sortKey) {
-
+      //basic sort:
       return model.sort((a, b) => {
-        if (column.sort === Sort.DESCEND) {
-          return a[column.sortKey] < b[column.sortKey] ? 1 : -1;
-        }
-        return a[column.sortKey] > b[column.sortKey] ? 1 : -1;
+        let val = a[column.sortKey] > b[column.sortKey] ? 1 :
+                  a[column.sortKey] == b[column.sortKey] ? 0 : -1;
+        return column.sort === Sort.DESCEND ? val * -1 : val;
       });
 
     }

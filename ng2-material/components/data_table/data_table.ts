@@ -56,14 +56,14 @@ export interface MdDataTableColumn {
    * Comparator for sorting the model for this column.
    * Column is sortable if this is present. {@link sortKey} is ignored if this is present.
    */
-  comparator?: Function;
+  comparator?: MdDataColumnComparator;
 
   /** ASCEND or DESCEND */
   sort?: Sort;
 }
 
-export interface MdDataTableColumnSortable extends MdDataTableColumn {
-  sortable
+export interface MdDataColumnComparator extends Function {
+  (a, b, direction: Sort): number;
 }
 
 export interface MdDataTableColumns {
@@ -115,7 +115,7 @@ export interface MdDataTableColumns {
         </th>
         <th *ngFor="#column of columns; #columnIndex = index"
             [ngClass]="column | dataColumnAlign"
-            [class.sortable]="column.sortKey"
+            [class.sortable]="column.sortKey || column.comparator"
             [class.md-data-table__header--sorted-ascending]="column.sort == sort.ASCEND"
             [class.md-data-table__header--sorted-descending]="column.sort == sort.DESCEND"
             (click)="sortColumn(column)">
@@ -154,7 +154,7 @@ export class MdDataTable {
   }
 
   sortColumn(column) {
-    if (!column.sortKey) {
+    if (!column.sortKey && !column.comparator) {
       // don't sort by anything, because we don't know how to sort this one
       return;
     }
