@@ -1,6 +1,7 @@
-import {View, Component} from 'angular2/core';
-import {MATERIAL_DIRECTIVES, MdDataColumnComparator, Sort} from 'ng2-material/all';
-
+import {View, Component, ElementRef} from 'angular2/core';
+import {MATERIAL_DIRECTIVES, MdDataColumnComparator, Sort, MdDialog} from 'ng2-material/all';
+import {MdDialogConfig, MdDialogBasic, MdDialogRef} from "ng2-material/components/dialog/dialog";
+import {DOM} from "angular2/src/platform/dom/dom_adapter";
 
 @Component({selector: 'data-table-components'})
 @View({
@@ -9,6 +10,23 @@ import {MATERIAL_DIRECTIVES, MdDataColumnComparator, Sort} from 'ng2-material/al
   directives: [MATERIAL_DIRECTIVES]
 })
 export default class DataTableComponent {
+
+  constructor(public dialog: MdDialog, public element: ElementRef) {
+
+  }
+
+  showAlert(ev) {
+    let config = new MdDialogConfig()
+      .parent(DOM.query('#popupContainer'))
+      .textContent(`
+        You can handle row clicks anyway you like,
+        but we are just going to toggle row selection for now.
+      `)
+      .title(`You selected ${ev.type}`)
+      .ok('Got it!')
+      .targetEvent(ev);
+    this.dialog.open(MdDialogBasic, this.element, config);
+  };
 
   typeSort: MdDataColumnComparator = (a, b, direction) => {
     let parenRegex = /.*?\((.*?)\)$/;
@@ -28,8 +46,7 @@ export default class DataTableComponent {
     {
       title: "Material",
       // For specific sorting, pass a comparator function.
-      // for instance, this one sorts by what's in parenthesis,
-      // not plain alphabetical name sort:
+      // for instance, this one sorts by what's in parenthesis.
       comparator: this.typeSort
     },
     {
@@ -39,7 +56,7 @@ export default class DataTableComponent {
     },
     {
       title: "Unit price",
-      align: 'right', //specify alignment if you need something specific.
+      align: 'right', //specify alignment.
       sortKey: 'price'
     },
   ];
@@ -63,7 +80,8 @@ export default class DataTableComponent {
   ];
 
   rowClick(item) {
-    console.log("can haz row click?", item);
+    this.showAlert(item);
+    item.selected = !item.selected;
   }
 
 }
