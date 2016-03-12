@@ -1,8 +1,11 @@
 import {
   Component,
   ContentChildren,
+  ElementRef,
+  EventEmitter,
   Host,
   Input,
+  Output,
   Pipe, PipeTransform,
   Query,
   QueryList,
@@ -21,8 +24,8 @@ import {MdDataTbody} from './data_table_body';
 export {MdDataTbody} from './data_table_body';
 import {MdDataThead} from './data_table_head';
 export {MdDataThead} from './data_table_head';
-import {MdDataRow} from './data_table_row';
-export {MdDataRow} from './data_table_row';
+import {MdDataRow, MdDataRowClickStyler} from './data_table_row';
+export {MdDataRow, MdDataRowClickStyler} from './data_table_row';
 
 import {DataColumnAlign, DataColumnSort} from './data_table_pipes';
 
@@ -36,6 +39,10 @@ export enum Sort {
   ASCEND, DESCEND
 }
 
+export interface MdDataColumnComparator extends Function {
+  (a, b, direction: Sort): number;
+}
+
 export interface MdDataTableColumn {
   /** Text to display in column heading. */
   title: String;
@@ -46,7 +53,7 @@ export interface MdDataTableColumn {
   /** whether a column is hidden. */
   hidden?: boolean;
 
-  /** efault left. "RIGHT" or "CENTER" to override */
+  /** default left. "RIGHT" or "CENTER" to override */
   align?: string;
 
   /** model[property] to sort by. Column is sortable if this is present. */
@@ -60,14 +67,6 @@ export interface MdDataTableColumn {
 
   /** ASCEND or DESCEND */
   sort?: Sort;
-}
-
-export interface MdDataColumnComparator extends Function {
-  (a, b, direction: Sort): number;
-}
-
-export interface MdDataTableColumns {
-  [index: number]: MdDataTableColumn; 
 }
 
 /**
@@ -101,11 +100,10 @@ export interface MdDataTableColumns {
 @Component({
   selector: 'md-data-table',
   host: {
-    'role': 'table',
-    'class': ''
+    'role': 'table'
   },
   pipes: [DataColumnAlign, DataColumnSort],
-  directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody],
+  directives: [MdCheckbox, MdDataCell, MdDataRow, MdDataTbody, MdDataRowClickStyler],
   template: `
   <table class="md-data-table">
     <thead md-data-thead>
@@ -129,7 +127,8 @@ export interface MdDataTableColumns {
           [columns]=columns
           [data]="item"
           [class.is-selected]="item.selected"
-          [templs]=cellTemplates></tr>
+          [templs]=cellTemplates
+          (click)="onRowClick(item)"></tr>
     </tbody>
   </table>`
 })
@@ -139,6 +138,9 @@ export class MdDataTable {
   @Input() columns: MdDataTableColumn[];
   @Input() sortable: boolean;
   @Input() model: any;
+
+  @Output()
+  rowClick: EventEmitter<any> = new EventEmitter(false);
 
   //TODO (Samjones) need support for NgFor trackBy
 
@@ -150,7 +152,8 @@ export class MdDataTable {
 
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
 
-  constructor(private _viewContainer: ViewContainerRef) {
+  constructor(private _viewContainer: ViewContainerRef, public element: ElementRef) {
+    this.element.nativeElement
   }
 
   sortColumn(column) {
@@ -179,6 +182,10 @@ export class MdDataTable {
     for (var i in this.model) {
       this.model[i].selected = this.allSelected;
     }
+  }
+
+  onRowClick(item) {
+    this.rowClick.emit(item);
   }
 
 }

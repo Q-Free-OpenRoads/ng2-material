@@ -7,7 +7,7 @@
         </h3>
       </div>
     </md-toolbar>
-    <md-data-table [columns]="columns" [selectable]="true" [model]="materials">
+    <md-data-table [columns]="columns" [selectable]="true" [model]="materials" (rowClick)="rowClick($event)">
       <!-- Define cell templates. Should match colums 1:1 -->
       <template #material="data">{{material.type}}</template>
       <template #material="data">{{material.qty}}</template>

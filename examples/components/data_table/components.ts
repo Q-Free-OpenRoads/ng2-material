@@ -1,5 +1,5 @@
 import {View, Component} from 'angular2/core';
-import {MATERIAL_DIRECTIVES, Sort} from 'ng2-material/all';
+import {MATERIAL_DIRECTIVES, MdDataColumnComparator, Sort} from 'ng2-material/all';
 
 
 @Component({selector: 'data-table-components'})
@@ -10,7 +10,7 @@ import {MATERIAL_DIRECTIVES, Sort} from 'ng2-material/all';
 })
 export default class DataTableComponent {
 
-  typeSort: Function = (a, b, direction) => {
+  typeSort: MdDataColumnComparator = (a, b, direction) => {
     let parenRegex = /.*?\((.*?)\)$/;
     let desc1 = a.type.match(parenRegex)[1];
     let desc2 = b.type.match(parenRegex)[1];
@@ -61,5 +61,9 @@ export default class DataTableComponent {
       price: 2.35
     }
   ];
+
+  rowClick(item) {
+    console.log("can haz row click?", item);
+  }
 
 }

@@ -11,7 +11,7 @@ export * from './components/content/content';
 
 import {
   MdDataTable, MdDataThead, MdDataTbody, MdDataCell,
-  MdDataRow, MdDataColumnComparator
+  MdDataRow, MdDataColumnComparator, MdDataRowClickStyler
 } from './components/data_table/data_table';
 export * from './components/data_table/data_table';
 
@@ -91,6 +91,7 @@ export const MATERIAL_DIRECTIVES: Type[] = CONST_EXPR([
   MdDataTbody,
   MdDataCell,
   MdDataRow,
+  MdDataRowClickStyler,
   MdDivider,
   MdIcon,
   MdInk,

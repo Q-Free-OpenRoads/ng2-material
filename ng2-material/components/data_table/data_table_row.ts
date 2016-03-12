@@ -1,6 +1,7 @@
 import {DOM} from 'angular2/src/platform/dom/dom_adapter';
 import {
   Component,
+  Directive,
   Input,
   Pipe, PipeTransform,
   QueryList,
@@ -17,7 +18,7 @@ import {DataColumnAlign} from './data_table_pipes';
   pipes: [DataColumnAlign],
   template: `
     <td *ngIf="selectable" class="md-data-check-cell">
-      <md-checkbox [(checked)]="data.selected"></md-checkbox>
+      <md-checkbox [(checked)]="data.selected" (click)="$event.stopPropagation()"></md-checkbox>
     </td>
     <td *ngFor="#cell of templs; #i=index"
         [ngClass]="getColumn(i) | dataColumnAlign">
@@ -55,3 +56,16 @@ export class MdDataRow {
   }
   
 }
+
+
+/**
+ * A convenience directive to add cursor:pointer to the table rows, whenever
+ * the <md-data-table> component has a (rowClick)="handler()"
+ */
+@Directive({
+  selector: '[rowClick]',
+  host: {
+    '[class.md-data--clickable-rows]': 'true'
+  }
+})
+export class MdDataRowClickStyler {}

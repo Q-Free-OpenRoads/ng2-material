@@ -3,16 +3,6 @@
 @import "../../core/style/shadows";
 @import "../../core/style/default-theme";
 
-// Don't expect to need these. Any headings/toolbars associated
-// with the table should be inside toolbar &/or wrapping card
-// and inherit styles that way.
-/* $data-table-h3-margin: 0 0 0px 0 !default;
-$data-table-h4-margin: 3px 0 1px 0 !default;
-$data-table-h4-font-weight: 400 !default;
-$data-table-header-line-height: 1.2em !default;
-$data-table-p-margin: 0 0 0 0 !default;
-$data-table-p-line-height: 1.6em !default; */
-
 //Heavy Influence From:
 //https://github.com/google/material-design-lite/blob/master/src/_variables.scss:
 $data-table-font-size: rem(1.3) !default;
@@ -43,17 +33,6 @@ $data-table-button-padding-right: rem(1.600) !default;
 $data-table-cell-top: $data-table-card-padding / 2;
 
 $data-table-select-width: rem(1.6) !default;
-
-//save some list reference grid measurements for now, in case.
-/* $list-item-primary-width: $baseline-grid * 7 !default;
-$list-item-primary-avatar-width: $baseline-grid * 5 !default;
-$list-item-primary-icon-width: $baseline-grid * 3 !default;
-$list-item-secondary-left-margin: $baseline-grid * 2 !default;
-$list-item-secondary-button-width: $baseline-grid * 6 !default;
-$list-item-inset-divider-offset: 12 * $baseline-grid !default;
-$list-item-height: 6 * $baseline-grid !default;
-$list-item-two-line-height: 9 * $baseline-grid !default;
-$list-item-three-line-height: 11 * $baseline-grid !default; */
 
 [md-data-table], .md-data-table {
   position: relative;
@@ -177,5 +156,11 @@ $list-item-three-line-height: 11 * $baseline-grid !default; */
     .mdl-data-table__select {
       vertical-align: middle;
     }
+  }
+}
+
+.md-data--clickable-rows {
+  tbody tr {
+    cursor: pointer;
   }
 }
