@@ -174,6 +174,11 @@ module.exports = function (grunt) {
           'test/**/*.ts'
         ],
         tasks: ['ts:source', 'notify:source']
+      },
+      //to use run: grunt karma:unit:start watch
+      karma: {
+        files: ['<%- sourceRoot %>/**/*.ts', 'test/**/*.ts'],
+        tasks: ['karma:unit:run']
       }
     },
 
@@ -224,12 +229,18 @@ module.exports = function (grunt) {
       }
     },
     karma: {
+      options: {
+        configFile: './karma.conf.js'
+      },
       cover: {
         options: {
           singleRun: true
         },
-        configFile: './karma.conf.js',
         preprocessors: {"ng2-material/**/*.js": "coverage"}
+      },
+      unit: {
+        background: true,
+        singleRun: false
       }
     },
     remapIstanbul: {

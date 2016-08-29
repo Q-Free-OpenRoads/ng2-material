@@ -29,6 +29,8 @@ export {MdDataRow, MdDataRowClickStyler} from './data_table_row';
 
 import {DataColumnAlign, DataColumnSort} from './data_table_pipes';
 
+//TODO (Samjones) how would user highlight / style a particular row?
+
 export const COLUMN_ALIGN = {
   RIGHT: 'right',
   LEFT: 'left',
@@ -51,7 +53,7 @@ export interface MdDataTableColumn {
   numeric?: boolean;
 
   /** whether a column is hidden. */
-  hidden?: boolean;
+  // hidden?: boolean; //TODO
 
   /** default left. "RIGHT" or "CENTER" to override */
   align?: string;
@@ -122,7 +124,7 @@ export interface MdDataTableColumn {
       </tr>
     </thead>
     <tbody md-data-tbody [model]="model" [columns]="columns">
-      <tr md-data-row *ngFor="#item of model | dataColumnSort:sortingColumn" [cells]="dataCells"
+      <tr md-data-row *ngFor="#item of model | dataColumnSort:sortingColumn"
           [selectable]="selectable"
           [columns]=columns
           [data]="item"
@@ -136,7 +138,6 @@ export class MdDataTable {
 
   @Input() selectable: boolean;
   @Input() columns: MdDataTableColumn[];
-  @Input() sortable: boolean;
   @Input() model: any;
 
   @Output()
@@ -153,7 +154,7 @@ export class MdDataTable {
   @ContentChildren(TemplateRef) cellTemplates: QueryList<MdDataCell>;
 
   constructor(private _viewContainer: ViewContainerRef, public element: ElementRef) {
-    this.element.nativeElement
+    // console.log('table constructor!');
   }
 
   sortColumn(column) {
